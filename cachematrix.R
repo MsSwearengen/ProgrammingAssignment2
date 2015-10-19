@@ -1,7 +1,6 @@
 
-## The following function defines a list of functions for the argument x, a matric
-##it also contains a object inv which it sets to NULL if not defined by a previous run of cacheSolve
-
+# The following function defines a list of functions for the argument x, a matrix
+#it also contains a object inv which it sets to NULL if not defined by a previous run of cacheSolve
 
 makeCacheMatrix <- function(x = matrix()) {
 
@@ -11,10 +10,20 @@ makeCacheMatrix <- function(x = matrix()) {
                 x <<- y
                 inv <<- NULL
         }
+#creates function that returns x
+        
+get <- function() x
 
-        get <- function() x
-        setinv <- function(solve) inv <<- inverse
+
+#creates function that sets whatever it is passed as 'inv'
+
+       setinv <- function(inverse) inv <<- inverse
+
+
+#creates function that returns inv
+
         getinv <- function() inv
+
         list(set = set, get = get,
              setinv = setinv,
              getinv = getinv)
@@ -29,13 +38,15 @@ makeCacheMatrix <- function(x = matrix()) {
 cacheSolve <- function(x, ...) {
 
         inv <- x$getinv()
-##the next part checks if inv is a value or null (if hasn't been calculated before).  If it is already defined will get from cache
+
+#the next part checks if inv is a value or null (if hasn't been calculated before).  If it is already defined will get from cache
         
-		if(!is.null(inv)) {
+	  if(!is.null(inv)) {
                 message("getting cached data")
                 return(inv)
         }
-#otherwise will calculate inv from scratch and save it *using function setinv from inside 
+
+#otherwise will calculate inv from scratch and save it using function setinv from inside 
 
         data <- x$get()
         inv <- solve(data, ...)
